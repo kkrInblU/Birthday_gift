@@ -44,7 +44,7 @@ def main() -> None:
     )
 
     html_content = load_html()
-    components.html(html_content, height=5600, scrolling=True)
+    components.html(html_content, height=4200, scrolling=True)
 
 
 if __name__ == "__main__":
