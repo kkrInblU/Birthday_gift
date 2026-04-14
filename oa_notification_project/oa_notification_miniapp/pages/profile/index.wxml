@@ -1,0 +1,50 @@
+<navigation-bar title="我的" back="{{false}}" color="#102A43" background="#F8FAFC"></navigation-bar>
+
+<view class="page">
+  <view class="profile-card">
+    <text class="profile-name">{{profile.name}}</text>
+    <text class="profile-meta">手机号：{{profile.phone}}</text>
+    <text class="profile-meta">邮箱：{{profile.email}}</text>
+    <text class="profile-meta">身份类型：{{profile.role}}</text>
+    <text class="profile-meta">注册时间：{{profile.registeredAt}}</text>
+  </view>
+
+  <view class="setting-card">
+    <text class="section-title">消息提醒设置</text>
+    <view class="setting-row">
+      <view>
+        <text class="setting-name">邮件提醒</text>
+        <text class="setting-desc">控制当前用户是否接收邮件通知</text>
+      </view>
+      <switch color="#0f766e" checked="{{settings.emailEnabled}}" disabled="{{savingEmailEnabled}}" bindchange="toggleEmail" />
+    </view>
+    <view class="setting-row">
+      <view>
+        <text class="setting-name">小程序提醒</text>
+        <text class="setting-desc">控制当前用户是否接收小程序通知</text>
+      </view>
+      <switch color="#0f766e" checked="{{settings.miniappEnabled}}" disabled="{{savingMiniappEnabled}}" bindchange="toggleMiniapp" />
+    </view>
+  </view>
+
+  <view class="setting-card">
+    <text class="section-title">刷新周期配置</text>
+    <picker mode="selector" range="{{['1分钟','5分钟','半小时','1小时']}}" bindchange="changeRefreshPeriod">
+      <view class="picker-row">
+        <text class="setting-name">当前频率</text>
+        <text class="picker-value">{{settings.refreshPeriod}}</text>
+      </view>
+    </picker>
+  </view>
+
+  <view class="setting-card">
+    <text class="section-title">管理员入口</text>
+    <view class="picker-row" bindtap="openAdminCrawlerPage">
+      <view>
+        <text class="setting-name">爬虫配置和日志</text>
+        <text class="setting-desc">查看全局爬虫配置，手动运行并查看任务记录</text>
+      </view>
+      <text class="picker-value">进入</text>
+    </view>
+  </view>
+</view>

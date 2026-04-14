@@ -1,0 +1,69 @@
+<navigation-bar title="通知详情" back="{{true}}" color="#102A43" background="#F8FAFC"></navigation-bar>
+
+<view class="page">
+  <view wx:if="{{loading}}" class="state-box">详情加载中...</view>
+  <view wx:elif="{{errorText}}" class="state-box error-box">{{errorText}}</view>
+
+  <block wx:elif="{{notification}}">
+    <scroll-view class="detail-scroll" scroll-y="true" enhanced="true" show-scrollbar="true">
+      <view class="article-card">
+        <text class="title">{{notification.title}}</text>
+        <view class="meta-row">
+          <view class="meta-line">
+            <text class="meta-label">发布单位</text>
+            <view class="meta-department-wrap">
+              <text class="meta-value">{{notification.department}}</text>
+              <button
+                wx:if="{{notification.department && !departmentSubscribed}}"
+                class="department-plus-btn"
+                loading="{{savingDepartmentSubscription}}"
+                bindtap="subscribeCurrentDepartment"
+              >+</button>
+            </view>
+          </view>
+          <view class="meta-line">
+            <text class="meta-label">发布时间</text>
+            <text class="meta-value">{{notification.publishTime}}</text>
+          </view>
+        </view>
+        <view wx:if="{{notification.category}}" class="category-chip">{{notification.category}}</view>
+      </view>
+
+      <view class="content-card">
+        <text class="section-title">正文内容</text>
+        <rich-text
+          wx:if="{{notification.miniappContentHtml}}"
+          class="content-rich-text"
+          nodes="{{notification.miniappContentHtml}}"
+        ></rich-text>
+        <text wx:else class="content-text">{{notification.contentText || '暂无正文内容'}}</text>
+      </view>
+
+      <view wx:if="{{notification.attachments.length}}" class="content-card">
+        <text class="section-title">附件列表</text>
+        <block wx:for="{{notification.attachments}}" wx:key="fileId">
+          <view class="attachment-item" bindtap="previewAttachment" data-name="{{item.filename}}">
+            <view class="attachment-head">
+              <text class="attachment-name">{{item.filename}}</text>
+              <text class="attachment-ext">{{item.extension || '文件'}}</text>
+            </view>
+            <text class="attachment-meta">大小：{{item.size || 0}} KB，点击后复制原文链接，请前往 OA 原页面下载</text>
+          </view>
+        </block>
+      </view>
+
+      <view class="detail-bottom-space"></view>
+    </scroll-view>
+
+    <view class="bottom-bar">
+      <button class="bottom-action {{isFavorite ? 'bottom-action-active' : ''}}" bindtap="toggleFavorite">
+        <text class="bottom-icon">{{isFavorite ? '♥' : '♡'}}</text>
+        <text class="bottom-text">{{isFavorite ? '已收藏' : '收藏'}}</text>
+      </button>
+      <button class="bottom-action primary" open-type="share">
+        <text class="bottom-icon">↗</text>
+        <text class="bottom-text">分享</text>
+      </button>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,64 @@
+<navigation-bar title="收藏和订阅" back="{{false}}" color="#102A43" background="#F8FAFC"></navigation-bar>
+
+<view class="page">
+  <view class="segment-bar">
+    <view
+      class="segment-item {{activeSection === 'favorites' ? 'segment-item-active' : ''}}"
+      bindtap="switchSection"
+      data-section="favorites"
+    >我的收藏</view>
+    <view
+      class="segment-item {{activeSection === 'subscriptions' ? 'segment-item-active' : ''}}"
+      bindtap="switchSection"
+      data-section="subscriptions"
+    >订阅管理</view>
+  </view>
+
+  <view wx:if="{{errorText}}" class="error-box">{{errorText}}</view>
+
+  <scroll-view class="content-scroll" scroll-y="true" enhanced="true" show-scrollbar="true">
+    <block wx:if="{{activeSection === 'favorites'}}">
+      <block wx:for="{{favoriteItems}}" wx:key="newsId">
+        <view class="card">
+          <view class="card-top" bindtap="openDetail" data-news-id="{{item.newsId}}">
+            <text class="title">{{item.title}}</text>
+            <text class="meta-time">{{item.publishTime}}</text>
+          </view>
+          <text class="meta">{{item.department}}</text>
+          <view class="action-row">
+            <view class="ghost-btn" bindtap="openDetail" data-news-id="{{item.newsId}}">查看详情</view>
+            <view class="danger-btn" bindtap="removeFavorite" data-news-id="{{item.newsId}}">取消收藏</view>
+          </view>
+        </view>
+      </block>
+      <view wx:if="{{!favoriteItems.length && !loading}}" class="empty-box">暂无收藏通知</view>
+    </block>
+
+    <block wx:elif="{{activeSection === 'subscriptions'}}">
+      <view class="card">
+        <text class="section-title">发布单位订阅管理</text>
+        <text class="section-desc">这里只管理是否订阅某个发布单位。邮件提醒和小程序提醒是否发送，以“我的”页中的全局开关为准。</text>
+
+        <block wx:for="{{availableDepartments}}" wx:key="*this">
+          <view class="subscription-card">
+            <view class="subscription-top">
+              <text class="department-name">{{item}}</text>
+              <switch
+                color="#0f766e"
+                checked="{{subscriptionConfigs[item].subscribed}}"
+                data-department="{{item}}"
+                bindchange="toggleSubscribed"
+              />
+            </view>
+          </view>
+        </block>
+
+        <view class="save-btn {{savingSubscriptions ? 'save-btn-disabled' : ''}}" bindtap="saveSubscriptions">
+          {{savingSubscriptions ? '保存中...' : '保存订阅设置'}}
+        </view>
+      </view>
+    </block>
+
+    <view class="bottom-space"></view>
+  </scroll-view>
+</view>

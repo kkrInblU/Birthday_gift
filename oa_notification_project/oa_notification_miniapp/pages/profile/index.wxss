@@ -1,0 +1,75 @@
+page {
+  height: 100vh;
+  background: linear-gradient(180deg, #f8fafc 0%, #f7f3ff 100%);
+}
+
+.page {
+  min-height: calc(100vh - 88rpx);
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+
+.profile-card,
+.setting-card {
+  margin-bottom: 18rpx;
+  padding: 28rpx;
+  border-radius: 24rpx;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 10rpx 28rpx rgba(15, 23, 42, 0.06);
+}
+
+.profile-name {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.profile-meta {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: #475569;
+}
+
+.section-title {
+  display: block;
+  margin-bottom: 12rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.setting-row,
+.picker-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24rpx;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid #e2e8f0;
+}
+
+.setting-row:last-child,
+.picker-row:last-child {
+  border-bottom: none;
+}
+
+.setting-name {
+  display: block;
+  font-size: 26rpx;
+  color: #0f172a;
+}
+
+.setting-desc {
+  display: block;
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #64748b;
+}
+
+.picker-value {
+  font-size: 24rpx;
+  color: #0f766e;
+  font-weight: 700;
+}

@@ -1,0 +1,79 @@
+<navigation-bar title="爬虫管理" back="{{true}}" color="#102A43" background="#F8FAFC"></navigation-bar>
+
+<view class="page">
+  <view class="panel">
+    <view class="panel-head panel-head-action" bindtap="toggleConfigPanel">
+      <text class="panel-title">全局爬虫配置</text>
+      <text class="collapse-link">{{configCollapsed ? '展开' : '收起'}}</text>
+    </view>
+    <view wx:if="{{!configCollapsed}}">
+      <view class="field">
+        <text class="label">调度开关</text>
+        <switch color="#0f766e" checked="{{config.schedulerEnabled}}" bindchange="onSchedulerToggle" />
+      </view>
+      <view class="field">
+        <text class="label">调度周期（分钟）</text>
+        <input class="input" type="digit" value="{{config.schedulerIntervalMinutes}}" bindinput="onInputInterval" />
+      </view>
+      <view class="field">
+        <text class="label">最大运行次数</text>
+        <input class="input" type="number" value="{{config.schedulerMaxRuns}}" bindinput="onInputMaxRuns" />
+      </view>
+      <view class="field">
+        <text class="label">单次抓取条数</text>
+        <input class="input" type="number" value="{{config.maxRecords}}" bindinput="onInputMaxRecords" />
+      </view>
+      <view class="field">
+        <text class="label">最小请求间隔（秒）</text>
+        <input class="input" type="digit" value="{{config.requestDelayMin}}" bindinput="onInputDelayMin" />
+      </view>
+      <view class="field field-last">
+        <text class="label">最大请求间隔（秒）</text>
+        <input class="input" type="digit" value="{{config.requestDelayMax}}" bindinput="onInputDelayMax" />
+      </view>
+      <button class="primary-btn" loading="{{saving}}" bindtap="saveConfig">保存配置</button>
+    </view>
+    <view wx:else class="config-summary">
+      <text class="summary-text">调度：{{config.schedulerEnabled ? '开启' : '关闭'}}</text>
+      <text class="summary-text">周期：{{config.schedulerIntervalMinutes}} 分钟</text>
+      <text class="summary-text">抓取：{{config.maxRecords}} 条 / 次</text>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="panel-head">
+      <text class="panel-title">手动运行</text>
+      <text class="state-text">{{runState.lastStatus || 'idle'}}</text>
+    </view>
+    <text class="hint">当前状态：{{runState.lastMessage || '暂无运行记录'}}</text>
+    <text class="hint">开始时间：{{runState.lastStartedAt || '-'}}</text>
+    <text class="hint">结束时间：{{runState.lastFinishedAt || '-'}}</text>
+    <button class="primary-btn" loading="{{running}}" bindtap="runCrawlerNow">立即抓取</button>
+  </view>
+
+  <view class="panel panel-jobs">
+    <view class="panel-head">
+      <text class="panel-title">历史调度信息</text>
+      <text class="refresh-link" bindtap="refreshLogs">刷新</text>
+    </view>
+    <text class="hint">当前已展示 {{jobs.length}} / {{jobsTotalCount}} 条，每次加载 10 条</text>
+    <scroll-view class="jobs-scroll" scroll-y="true" lower-threshold="120" bindscrolltolower="onJobsScrollToLower">
+      <view wx:if="{{jobs.length === 0}}" class="empty">暂无任务记录</view>
+      <view wx:for="{{jobs}}" wx:key="id" class="job-card">
+        <view class="job-row">
+          <text class="job-title">#{{item.id}} {{item.jobType}}</text>
+          <text class="job-status status-{{item.status}}">{{item.status}}</text>
+        </view>
+        <text class="job-meta">触发方式：{{item.triggerMode}}</text>
+        <text class="job-meta">开始：{{item.startedAt}}</text>
+        <text class="job-meta">结束：{{item.finishedAt || '-'}}</text>
+        <text class="job-meta">抓取通知：{{item.notificationsCount}}，附件：{{item.attachmentsCount}}</text>
+        <text class="job-meta">入库通知：{{item.dbNotificationsCount}}，入库附件/扩展：{{item.dbAttachmentsCount}}</text>
+        <text class="job-message">{{item.message || '-'}}</text>
+        <text wx:if="{{item.errorMessage}}" class="job-error">{{item.errorMessage}}</text>
+      </view>
+      <view wx:if="{{jobsLoadingMore}}" class="load-more">正在加载更多...</view>
+      <view wx:else class="load-more">{{jobsHasMore ? '滑动到底部自动加载更多' : '历史调度信息已全部加载完毕'}}</view>
+    </scroll-view>
+  </view>
+</view>

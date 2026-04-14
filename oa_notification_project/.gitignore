@@ -1,0 +1,24 @@
+.venv/
+.streamlit/secrets.toml
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py,cover
+
+# Tool caches
+.pytest_cache/
+.mypy_cache/
+
+# Runtime output
+oa_crawler_output/
+*.xlsx
+
+# Local IDE / dev config
+.vscode/
+.idea/
+
+# WeChat miniapp local-only config
+oa_notification_miniapp/project.private.config.json
